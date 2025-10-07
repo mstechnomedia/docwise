@@ -524,8 +524,8 @@ const Dashboard = ({ user, onLogout }) => {
                     type="submit" 
                     className="w-full btn-primary"
                     disabled={analyzing || 
-                      (inputMode === 'upload' && (!selectedFile || !analysisForm.prompt_id)) ||
-                      (inputMode === 'text' && (!textInput.trim() || !analysisForm.prompt_id))
+                      (inputMode === 'upload' && (!selectedFile || !analysisForm.prompt_ids.length === 0)) ||
+                      (inputMode === 'text' && (!textInput.trim() || !analysisForm.prompt_ids.length === 0))
                     }
                     data-testid="analyze-btn"
                   >
