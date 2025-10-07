@@ -378,9 +378,9 @@ async def delete_prompt(prompt_id: str, request: Request):
 # === Document Analysis Routes ===
 @api_router.post("/documents/analyze")
 async def analyze_document(
+    request: Request,
     file: UploadFile = File(...),
-    analysis_data: str = Form(...),
-    request: Request = None
+    analysis_data: str = Form(...)
 ):
     """Upload and analyze document"""
     user = await get_current_user(request)
