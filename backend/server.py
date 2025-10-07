@@ -552,6 +552,10 @@ async def download_analysis(analysis_id: str, request: Request):
     if not analysis:
         raise HTTPException(status_code=404, detail="Analysis not found")
     
+    # Handle backwards compatibility for download
+    if "prompt_id" in analysis and "prompt_ids" not in analysis:
+        analysis["prompt_ids"] = [analysis["prompt_id"]]
+    
     # Create downloadable content
     content = f"""Document Analysis Report
 ================================
