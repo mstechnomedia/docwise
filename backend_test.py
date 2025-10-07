@@ -415,19 +415,19 @@ startxref
         return success
 
     def test_text_analysis_gpt5(self):
-        """Test text analysis with GPT-5 model"""
+        """Test text analysis with GPT-5 model (single prompt)"""
         if not hasattr(self, 'test_prompt_id'):
             return False
         
         text_analysis_data = {
-            "prompt_id": self.test_prompt_id,
+            "prompt_ids": [self.test_prompt_id],
             "ai_model": "gpt-5",
             "text_content": "This is a sample financial report. Revenue for Q1 2024 was $1.2 million, representing a 15% increase from the previous quarter. Operating expenses were $800,000, resulting in a net profit margin of 33.3%. Key performance indicators show strong growth in customer acquisition with 500 new customers added this quarter.",
             "document_name": "Sample Financial Text"
         }
         
         success, response = self.run_test(
-            "Text Analysis (GPT-5)",
+            "Text Analysis (GPT-5 Single Prompt)",
             "POST",
             "documents/analyze-text",
             200,
@@ -440,19 +440,19 @@ startxref
         return False
 
     def test_text_analysis_claude4(self):
-        """Test text analysis with Claude-4 model"""
+        """Test text analysis with Claude-4 model (single prompt)"""
         if not hasattr(self, 'test_prompt_id'):
             return False
         
         text_analysis_data = {
-            "prompt_id": self.test_prompt_id,
+            "prompt_ids": [self.test_prompt_id],
             "ai_model": "claude-4",
             "text_content": "Market analysis report: The technology sector showed robust performance in 2024. Software companies experienced an average revenue growth of 22%, while hardware manufacturers saw more modest gains of 8%. Cloud computing services dominated the market with a 45% market share increase. Investment in AI and machine learning technologies reached $50 billion globally.",
             "document_name": "Market Analysis Text"
         }
         
         success, response = self.run_test(
-            "Text Analysis (Claude-4)",
+            "Text Analysis (Claude-4 Single Prompt)",
             "POST",
             "documents/analyze-text",
             200,
@@ -461,6 +461,31 @@ startxref
         
         if success and 'id' in response:
             self.test_text_analysis_claude_id = response['id']
+            return True
+        return False
+
+    def test_multi_prompt_text_analysis(self):
+        """Test text analysis with multiple prompts"""
+        if not hasattr(self, 'test_prompt_id') or not hasattr(self, 'test_prompt_id_2'):
+            return False
+        
+        text_analysis_data = {
+            "prompt_ids": [self.test_prompt_id, self.test_prompt_id_2],
+            "ai_model": "gpt-5",
+            "text_content": "Comprehensive business report: Our company achieved record revenue of $5.2 million in 2024, marking a 28% year-over-year growth. The technology division contributed 60% of total revenue with innovative AI solutions. Customer satisfaction scores improved to 94%, and we expanded into three new markets. Strategic partnerships with major tech companies are expected to drive 40% growth in 2025. Key challenges include talent acquisition and supply chain optimization.",
+            "document_name": "Multi-Prompt Business Report"
+        }
+        
+        success, response = self.run_test(
+            "Text Analysis (Multiple Prompts)",
+            "POST",
+            "documents/analyze-text",
+            200,
+            data=text_analysis_data
+        )
+        
+        if success and 'id' in response:
+            self.test_multi_text_analysis_id = response['id']
             return True
         return False
 
