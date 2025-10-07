@@ -587,13 +587,15 @@ async def analyze_text(
         else:
             raise HTTPException(status_code=400, detail="Invalid AI model")
         
-        # Create analysis prompt
+        # Create analysis prompt with multiple prompts
+        prompt_contents = "\n\n".join([f"Prompt {i+1}: {prompt['content']}" for i, prompt in enumerate(prompts)])
         analysis_prompt = f"""Text Content:
 {analysis_request.text_content}
 
-User Prompt: {prompt['content']}
+User Prompts:
+{prompt_contents}
 
-Please analyze the text content according to the user prompt and provide a comprehensive, detailed response."""
+Please analyze the text content according to all the user prompts and provide a comprehensive, detailed response addressing each prompt."""
         
         user_message = UserMessage(text=analysis_prompt)
         ai_response = await chat.send_message(user_message)
