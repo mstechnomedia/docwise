@@ -283,7 +283,7 @@ async def login(login_data: UserLogin):
     }
 
 @api_router.post("/auth/logout")
-async def logout(request):
+async def logout(request: Request):
     """Logout user"""
     session_token = request.cookies.get('session_token')
     if session_token:
