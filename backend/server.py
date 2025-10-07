@@ -314,7 +314,7 @@ async def create_prompt(prompt_data: PromptCreate, request: Request):
     return Prompt(**prompt)
 
 @api_router.get("/prompts", response_model=List[Prompt])
-async def get_prompts(request):
+async def get_prompts(request: Request):
     """Get all prompts for current user"""
     user = await get_current_user(request)
     
