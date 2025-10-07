@@ -241,7 +241,8 @@ async def register(user_data: UserCreate):
         "password": user_data.password,  # In production: hash this
         "created_at": datetime.now(timezone.utc)
     }
-    await db.users.insert_one(user)
+    result = await db.users.insert_one(user)
+    user['_id'] = str(result.inserted_id)
     
     # Create session
     session_token = str(uuid.uuid4())
