@@ -111,11 +111,44 @@
 
 /* Analysis response styles */
 .analysis-content {
-  @apply prose prose-slate max-w-none;
-  @apply prose-headings:font-space prose-headings:text-slate-800;
-  @apply prose-p:text-slate-600 prose-p:leading-relaxed;
-  @apply prose-strong:text-slate-800 prose-em:text-slate-700;
-  @apply prose-code:bg-slate-100 prose-code:px-2 prose-code:py-1 prose-code:rounded;
+  max-width: none;
+  color: #64748b;
+  line-height: 1.75;
+}
+
+.analysis-content h1,
+.analysis-content h2,
+.analysis-content h3,
+.analysis-content h4,
+.analysis-content h5,
+.analysis-content h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  color: #1e293b;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.analysis-content p {
+  color: #475569;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+.analysis-content strong {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.analysis-content em {
+  color: #374151;
+}
+
+.analysis-content code {
+  background-color: #f1f5f9;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
 }
 
 /* Navigation styles */
