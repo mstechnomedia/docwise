@@ -298,7 +298,7 @@ async def get_me(request: Request):
 
 # === Prompt Management Routes ===
 @api_router.post("/prompts", response_model=Prompt)
-async def create_prompt(prompt_data: PromptCreate, request):
+async def create_prompt(prompt_data: PromptCreate, request: Request):
     """Create a new prompt"""
     user = await get_current_user(request)
     
