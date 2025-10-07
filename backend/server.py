@@ -258,8 +258,11 @@ async def register(user_data: UserCreate):
     result = await db.sessions.insert_one(session_obj)
     session_obj['_id'] = str(result.inserted_id)
     
+    # Convert ObjectId to string for serialization
+    user_response = {k: str(v) if k == '_id' else v for k, v in user.items() if k != 'password'}
+    
     return {
-        "user": {k: v for k, v in user.items() if k != 'password'},
+        "user": user_response,
         "session_token": session_token
     }
 
@@ -282,8 +285,11 @@ async def login(login_data: UserLogin):
     result = await db.sessions.insert_one(session_obj)
     session_obj['_id'] = str(result.inserted_id)
     
+    # Convert ObjectId to string for serialization
+    user_response = {k: str(v) if k == '_id' else v for k, v in user.items() if k != 'password'}
+    
     return {
-        "user": {k: v for k, v in user.items() if k != 'password'},
+        "user": user_response,
         "session_token": session_token
     }
 
