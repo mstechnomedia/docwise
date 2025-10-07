@@ -186,9 +186,12 @@ const Dashboard = ({ user, onLogout }) => {
     }
   };
 
-  const tabs = [
-    { id: 'prompts', label: 'Prompts', icon: 'fas fa-edit' },
-    { id: 'analyze', label: 'Analyze Document', icon: 'fas fa-file-upload' },
+  const tabs = user.is_admin ? [
+    { id: 'prompts', label: 'Manage Prompts', icon: 'fas fa-edit' },
+    { id: 'analyze', label: 'Analyze Content', icon: 'fas fa-file-upload' },
+    { id: 'analyses', label: 'Analysis History', icon: 'fas fa-history' }
+  ] : [
+    { id: 'analyze', label: 'Analyze Content', icon: 'fas fa-file-upload' },
     { id: 'analyses', label: 'Analysis History', icon: 'fas fa-history' }
   ];
 
