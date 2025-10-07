@@ -589,21 +589,25 @@ startxref
             
             # Prompt management tests
             if self.test_create_prompt():
+                self.test_create_second_prompt()  # Create second prompt for multi-prompt testing
                 self.test_get_prompts()
                 self.test_update_prompt()
                 
-                # Document analysis tests
+                # Document analysis tests (single and multi-prompt)
                 if self.test_document_analysis():
+                    self.test_multi_prompt_document_analysis()  # New multi-prompt test
                     self.test_get_analyses()
                     self.test_download_analysis()
                 
-                # Text analysis tests (new functionality)
+                # Text analysis tests (single and multi-prompt)
                 self.test_text_analysis_gpt5()
                 self.test_text_analysis_claude4()
+                self.test_multi_prompt_text_analysis()  # New multi-prompt test
                 self.test_text_analysis_validation()
                 
                 # Cleanup
                 self.test_delete_prompt()
+                self.test_delete_second_prompt()
             
             # Logout
             self.test_logout()
