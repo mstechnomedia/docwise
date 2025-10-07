@@ -166,6 +166,26 @@ class ManuscriptTMAPITester:
             return True
         return False
 
+    def test_create_second_prompt(self):
+        """Test creating second analysis prompt for multi-prompt testing"""
+        prompt_data = {
+            "title": "Extract Key Insights",
+            "content": "Please identify and summarize the key insights, trends, and strategic recommendations from this document. Focus on actionable items and future outlook."
+        }
+        
+        success, response = self.run_test(
+            "Create Second Prompt",
+            "POST",
+            "prompts",
+            200,
+            data=prompt_data
+        )
+        
+        if success and 'id' in response:
+            self.test_prompt_id_2 = response['id']
+            return True
+        return False
+
     def test_get_prompts(self):
         """Test getting user prompts"""
         success, response = self.run_test(
