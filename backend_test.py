@@ -540,14 +540,27 @@ startxref
         return success and success2 and success3
 
     def test_delete_prompt(self):
-        """Test deleting a prompt"""
+        """Test deleting first prompt"""
         if not hasattr(self, 'test_prompt_id'):
             return False
             
         success, response = self.run_test(
-            "Delete Prompt",
+            "Delete First Prompt",
             "DELETE",
             f"prompts/{self.test_prompt_id}",
+            200
+        )
+        return success
+
+    def test_delete_second_prompt(self):
+        """Test deleting second prompt"""
+        if not hasattr(self, 'test_prompt_id_2'):
+            return False
+            
+        success, response = self.run_test(
+            "Delete Second Prompt",
+            "DELETE",
+            f"prompts/{self.test_prompt_id_2}",
             200
         )
         return success
