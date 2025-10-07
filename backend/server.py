@@ -156,6 +156,12 @@ class SessionData(BaseModel):
     session_token: str
 
 # === Authentication Helpers ===
+ADMIN_EMAIL = "mueen.ahmed@gmail.com"
+
+def is_admin_user(user):
+    """Check if user is admin"""
+    return user.email == ADMIN_EMAIL
+
 async def get_current_user(request):
     """Get current user from session token"""
     # First check cookies
