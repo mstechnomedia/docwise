@@ -607,7 +607,9 @@ const Dashboard = ({ user, onLogout }) => {
             
             <div className="space-y-4">
               {analyses.map(analysis => {
-                const prompt = prompts.find(p => p.id === analysis.prompt_id);
+                const analysisPrompts = analysis.prompt_ids ? 
+                  prompts.filter(p => analysis.prompt_ids.includes(p.id)) : 
+                  prompts.filter(p => p.id === analysis.prompt_id); // Backwards compatibility
                 return (
                   <Card key={analysis.id} className="card-hover" data-testid="analysis-card">
                     <CardHeader>
