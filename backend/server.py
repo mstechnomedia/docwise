@@ -178,7 +178,7 @@ async def get_current_user(request):
 
 # === Authentication Routes ===
 @api_router.post("/auth/session-data")
-async def process_session_data(request):
+async def process_session_data(request: Request):
     """Process session ID from Emergent Auth"""
     session_id = request.headers.get('X-Session-ID')
     if not session_id:
