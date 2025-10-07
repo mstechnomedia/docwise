@@ -257,7 +257,7 @@ const Dashboard = ({ user, onLogout }) => {
         {activeTab === 'prompts' && user.is_admin && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-slate-800 font-space">Analysis Prompts</h2>
+              <h2 className="text-2xl font-bold text-slate-800 font-space">Manage Analysis Prompts</h2>
               <Dialog open={showPromptModal} onOpenChange={setShowPromptModal}>
                 <DialogTrigger asChild>
                   <Button className="btn-primary" data-testid="create-prompt-btn">
