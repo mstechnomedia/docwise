@@ -491,7 +491,7 @@ startxref
 
     def test_text_analysis_validation(self):
         """Test text analysis input validation"""
-        # Test missing prompt_id
+        # Test missing prompt_ids
         invalid_data = {
             "ai_model": "gpt-5",
             "text_content": "Some text content",
@@ -499,29 +499,45 @@ startxref
         }
         
         success, response = self.run_test(
-            "Text Analysis Validation (Missing Prompt)",
+            "Text Analysis Validation (Missing Prompts)",
             "POST",
             "documents/analyze-text",
             422,  # Validation error
             data=invalid_data
         )
         
-        # Test missing text_content
+        # Test empty prompt_ids array
         invalid_data2 = {
-            "prompt_id": "fake-prompt-id",
+            "prompt_ids": [],
             "ai_model": "gpt-5",
+            "text_content": "Some text content",
             "document_name": "Test Document"
         }
         
         success2, response2 = self.run_test(
+            "Text Analysis Validation (Empty Prompts)",
+            "POST",
+            "documents/analyze-text",
+            400,  # Bad request - at least one prompt required
+            data=invalid_data2
+        )
+        
+        # Test missing text_content
+        invalid_data3 = {
+            "prompt_ids": ["fake-prompt-id"],
+            "ai_model": "gpt-5",
+            "document_name": "Test Document"
+        }
+        
+        success3, response3 = self.run_test(
             "Text Analysis Validation (Missing Text)",
             "POST",
             "documents/analyze-text",
             422,  # Validation error
-            data=invalid_data2
+            data=invalid_data3
         )
         
-        return success and success2
+        return success and success2 and success3
 
     def test_delete_prompt(self):
         """Test deleting a prompt"""
