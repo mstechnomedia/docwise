@@ -473,24 +473,77 @@ const Dashboard = ({ user, onLogout }) => {
                     </div>
                   )}
 
-                  {/* Prompt Selection */}
+                  {/* Prompt Selection - Multiple Selection */}
                   <div>
-                    <Label htmlFor="prompt">Analysis Prompt</Label>
-                    <Select 
-                      value={analysisForm.prompt_ids[0] || ''} 
-                      onValueChange={(value) => setAnalysisForm(prev => ({ ...prev, prompt_ids: [value] }))}
-                    >
-                      <SelectTrigger data-testid="prompt-select">
-                        <SelectValue placeholder="Select a prompt for analysis" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {prompts.map(prompt => (
-                          <SelectItem key={prompt.id} value={prompt.id}>
-                            {prompt.title}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Label htmlFor="prompt">Analysis Prompts</Label>
+                    <div className="mt-2 space-y-3 max-h-48 overflow-y-auto border border-slate-200 rounded-lg p-3">
+                      {prompts.length === 0 ? (
+                        <p className="text-slate-500 text-sm">No prompts available</p>
+                      ) : (
+                        prompts.map(prompt => (
+                          <div key={prompt.id} className="flex items-start space-x-3">
+                            <input
+                              type="checkbox"
+                              id={`prompt-${prompt.id}`}
+                              checked={analysisForm.prompt_ids.includes(prompt.id)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setAnalysisForm(prev => ({
+                                    ...prev,
+                                    prompt_ids: [...prev.prompt_ids, prompt.id]
+                                  }));
+                                } else {
+                                  setAnalysisForm(prev => ({
+                                    ...prev,
+                                    prompt_ids: prev.prompt_ids.filter(id => id !== prompt.id)
+                                  }));
+                                }
+                              }}
+                              className="mt-1 h-4 w-4 text-slate-800 border-slate-300 rounded focus:ring-slate-500"
+                              data-testid={`prompt-checkbox-${prompt.id}`}
+                            />
+                            <div className="flex-1">
+                              <label 
+                                htmlFor={`prompt-${prompt.id}`} 
+                                className="text-sm font-medium text-slate-800 cursor-pointer"
+                              >
+                                {prompt.title}
+                              </label>
+                              <p className="text-xs text-slate-500 mt-1 line-clamp-2">
+                                {prompt.content}
+                              </p>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                    <p className="text-sm text-slate-500 mt-2">
+                      {analysisForm.prompt_ids.length} prompt{analysisForm.prompt_ids.length !== 1 ? 's' : ''} selected
+                    </p>
+                    <div className="flex space-x-2 mt-2">
+                      <button
+                        type="button"
+                        onClick={() => setAnalysisForm(prev => ({ 
+                          ...prev, 
+                          prompt_ids: prompts.map(p => p.id) 
+                        }))}
+                        className="text-xs text-slate-600 hover:text-slate-800 underline"
+                        data-testid="select-all-prompts"
+                      >
+                        Select All
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAnalysisForm(prev => ({ 
+                          ...prev, 
+                          prompt_ids: [] 
+                        }))}
+                        className="text-xs text-slate-600 hover:text-slate-800 underline"
+                        data-testid="clear-all-prompts"
+                      >
+                        Clear All
+                      </button>
+                    </div>
                   </div>
 
                   {/* AI Model Selection */}
