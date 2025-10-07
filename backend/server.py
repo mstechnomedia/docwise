@@ -505,6 +505,77 @@ Generated: {analysis['created_at']}
         headers={"Content-Disposition": f"attachment; filename=analysis_{analysis_id}.txt"}
     )
 
+# === Text Analysis Route ===
+@api_router.post("/documents/analyze-text")
+async def analyze_text(
+    request: Request,
+    analysis_request: TextAnalysisRequest
+):
+    """Analyze text content directly without file upload"""
+    user = await get_current_user(request)
+    
+    # Check if prompt exists and belongs to user
+    prompt = await db.prompts.find_one({
+        "id": analysis_request.prompt_id,
+        "user_id": user.id
+    })
+    if not prompt:
+        raise HTTPException(status_code=404, detail="Prompt not found")
+    
+    # Use text content directly
+    extracted_text = f"[Text Content from {analysis_request.document_name}]\n\n{analysis_request.text_content}"
+    
+    # Generate AI response
+    try:
+        # Initialize AI chat
+        api_key = os.environ.get('EMERGENT_LLM_KEY')
+        if not api_key:
+            raise HTTPException(status_code=500, detail="AI service not configured")
+        
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=str(uuid.uuid4()),
+            system_message="You are an expert document analyzer. Provide detailed, comprehensive responses based on the document content and user prompts."
+        )
+        
+        # Set model based on user selection
+        if analysis_request.ai_model == "gpt-5":
+            chat.with_model("openai", "gpt-5")
+        elif analysis_request.ai_model == "claude-4":
+            chat.with_model("anthropic", "claude-4-sonnet-20250514")
+        else:
+            raise HTTPException(status_code=400, detail="Invalid AI model")
+        
+        # Create analysis prompt
+        analysis_prompt = f"""Text Content:
+{analysis_request.text_content}
+
+User Prompt: {prompt['content']}
+
+Please analyze the text content according to the user prompt and provide a comprehensive, detailed response."""
+        
+        user_message = UserMessage(text=analysis_prompt)
+        ai_response = await chat.send_message(user_message)
+        
+    except Exception as e:
+        logging.error(f"AI analysis error: {e}")
+        raise HTTPException(status_code=500, detail="AI analysis failed")
+    
+    # Save analysis result
+    analysis = {
+        "id": str(uuid.uuid4()),
+        "user_id": user.id,
+        "document_name": analysis_request.document_name,
+        "prompt_id": analysis_request.prompt_id,
+        "ai_model": analysis_request.ai_model,
+        "extracted_text": extracted_text,
+        "response": str(ai_response),
+        "created_at": datetime.now(timezone.utc)
+    }
+    await db.analyses.insert_one(analysis)
+    
+    return DocumentAnalysis(**analysis)
+
 # === Health Check ===
 @api_router.get("/")
 async def root():
