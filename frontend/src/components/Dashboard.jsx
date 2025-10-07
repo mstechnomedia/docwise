@@ -372,42 +372,98 @@ const Dashboard = ({ user, onLogout }) => {
           <div className="max-w-2xl mx-auto">
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl font-space text-center">Analyze Document</CardTitle>
+                <CardTitle className="text-2xl font-space text-center">Analyze Content</CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleAnalyzeDocument} className="space-y-6">
-                  {/* File Upload */}
+                  {/* Input Mode Selection */}
                   <div>
-                    <Label htmlFor="file">PDF Document</Label>
-                    <div className="mt-2">
-                      <input
-                        id="file"
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileSelect}
-                        className="hidden"
-                        data-testid="file-input"
-                      />
-                      <div 
-                        className="drop-zone p-8 text-center cursor-pointer"
-                        onClick={() => document.getElementById('file').click()}
+                    <Label className="text-base font-medium">Input Method</Label>
+                    <div className="mt-3 flex space-x-4">
+                      <button
+                        type="button"
+                        onClick={() => {setInputMode('upload'); setTextInput(''); setSelectedFile(null);}}
+                        className={`flex-1 p-4 rounded-lg border-2 transition-all ${
+                          inputMode === 'upload' 
+                            ? 'border-slate-800 bg-slate-50 text-slate-800' 
+                            : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                        }`}
+                        data-testid="upload-mode-btn"
                       >
-                        {selectedFile ? (
-                          <div className="text-green-600">
-                            <i className="fas fa-file-pdf text-2xl mb-2"></i>
-                            <p className="font-medium">{selectedFile.name}</p>
-                            <p className="text-sm text-slate-500">Click to change file</p>
-                          </div>
-                        ) : (
-                          <div className="text-slate-500">
-                            <i className="fas fa-cloud-upload-alt text-3xl mb-4"></i>
-                            <p className="font-medium mb-2">Choose PDF file to analyze</p>
-                            <p className="text-sm">Click here or drag and drop your PDF</p>
-                          </div>
-                        )}
-                      </div>
+                        <i className="fas fa-file-pdf text-xl mb-2"></i>
+                        <p className="font-medium">Upload PDF</p>
+                        <p className="text-sm opacity-75">Upload a PDF document</p>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {setInputMode('text'); setSelectedFile(null); setTextInput('');}}
+                        className={`flex-1 p-4 rounded-lg border-2 transition-all ${
+                          inputMode === 'text' 
+                            ? 'border-slate-800 bg-slate-50 text-slate-800' 
+                            : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                        }`}
+                        data-testid="text-mode-btn"
+                      >
+                        <i className="fas fa-edit text-xl mb-2"></i>
+                        <p className="font-medium">Enter Text</p>
+                        <p className="text-sm opacity-75">Type or paste content</p>
+                      </button>
                     </div>
                   </div>
+
+                  {/* File Upload */}
+                  {inputMode === 'upload' && (
+                    <div>
+                      <Label htmlFor="file">PDF Document</Label>
+                      <div className="mt-2">
+                        <input
+                          id="file"
+                          type="file"
+                          accept=".pdf"
+                          onChange={handleFileSelect}
+                          className="hidden"
+                          data-testid="file-input"
+                        />
+                        <div 
+                          className="drop-zone p-8 text-center cursor-pointer"
+                          onClick={() => document.getElementById('file').click()}
+                        >
+                          {selectedFile ? (
+                            <div className="text-green-600">
+                              <i className="fas fa-file-pdf text-2xl mb-2"></i>
+                              <p className="font-medium">{selectedFile.name}</p>
+                              <p className="text-sm text-slate-500">Click to change file</p>
+                            </div>
+                          ) : (
+                            <div className="text-slate-500">
+                              <i className="fas fa-cloud-upload-alt text-3xl mb-4"></i>
+                              <p className="font-medium mb-2">Choose PDF file to analyze</p>
+                              <p className="text-sm">Click here or drag and drop your PDF</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Text Input */}
+                  {inputMode === 'text' && (
+                    <div>
+                      <Label htmlFor="textContent">Text Content</Label>
+                      <Textarea
+                        id="textContent"
+                        value={textInput}
+                        onChange={(e) => setTextInput(e.target.value)}
+                        placeholder="Paste or type your content here for analysis. This can be any text content including documents, articles, reports, or any other text you'd like to analyze..."
+                        rows={12}
+                        className="mt-2 resize-none"
+                        data-testid="text-input-area"
+                      />
+                      <p className="text-sm text-slate-500 mt-2">
+                        {textInput.length} characters
+                      </p>
+                    </div>
+                  )}
 
                   {/* Prompt Selection */}
                   <div>
