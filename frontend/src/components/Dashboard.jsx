@@ -515,18 +515,21 @@ const Dashboard = ({ user, onLogout }) => {
                   <Button 
                     type="submit" 
                     className="w-full btn-primary"
-                    disabled={analyzing || !selectedFile || !analysisForm.prompt_id}
+                    disabled={analyzing || 
+                      (inputMode === 'upload' && (!selectedFile || !analysisForm.prompt_id)) ||
+                      (inputMode === 'text' && (!textInput.trim() || !analysisForm.prompt_id))
+                    }
                     data-testid="analyze-btn"
                   >
                     {analyzing ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                        Analyzing Document...
+                        Analyzing Content...
                       </>
                     ) : (
                       <>
                         <i className="fas fa-magic mr-2"></i>
-                        Analyze Document
+                        Analyze {inputMode === 'upload' ? 'Document' : 'Text'}
                       </>
                     )}
                   </Button>
