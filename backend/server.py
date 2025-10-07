@@ -447,7 +447,7 @@ async def get_analyses(request: Request):
     return [DocumentAnalysis(**analysis) for analysis in analyses]
 
 @api_router.get("/documents/analyses/{analysis_id}/download")
-async def download_analysis(analysis_id: str, request):
+async def download_analysis(analysis_id: str, request: Request):
     """Download analysis as text file"""
     user = await get_current_user(request)
     
