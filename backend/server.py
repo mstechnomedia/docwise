@@ -351,10 +351,20 @@ async def create_prompt(prompt_data: PromptCreate, request: Request):
 
 @api_router.get("/prompts", response_model=List[Prompt])
 async def get_prompts(request: Request):
-    """Get all prompts for current user"""
+    """Get all prompts - Admin can see all, users see admin's prompts"""
     user = await get_current_user(request)
     
-    prompts = await db.prompts.find({"user_id": user.id}).to_list(1000)
+    if is_admin_user(user):
+        # Admin sees their own prompts
+        prompts = await db.prompts.find({"user_id": user.id}).to_list(1000)
+    else:
+        # Regular users see admin's prompts only
+        admin_user = await db.users.find_one({"email": ADMIN_EMAIL})
+        if admin_user:
+            prompts = await db.prompts.find({"user_id": admin_user["id"]}).to_list(1000)
+        else:
+            prompts = []
+    
     return [Prompt(**prompt) for prompt in prompts]
 
 @api_router.put("/prompts/{prompt_id}", response_model=Prompt)
