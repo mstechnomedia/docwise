@@ -344,7 +344,7 @@ async def update_prompt(prompt_id: str, prompt_data: PromptUpdate, request: Requ
     return Prompt(**updated_prompt)
 
 @api_router.delete("/prompts/{prompt_id}")
-async def delete_prompt(prompt_id: str, request):
+async def delete_prompt(prompt_id: str, request: Request):
     """Delete a prompt"""
     user = await get_current_user(request)
     
