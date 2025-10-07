@@ -434,6 +434,11 @@ startxref
                     self.test_get_analyses()
                     self.test_download_analysis()
                 
+                # Text analysis tests (new functionality)
+                self.test_text_analysis_gpt5()
+                self.test_text_analysis_claude4()
+                self.test_text_analysis_validation()
+                
                 # Cleanup
                 self.test_delete_prompt()
             
