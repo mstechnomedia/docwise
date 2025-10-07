@@ -408,8 +408,8 @@ const Dashboard = ({ user, onLogout }) => {
                   <div>
                     <Label htmlFor="model">AI Model</Label>
                     <Select 
-                      value={analysisForm.aiModel} 
-                      onValueChange={(value) => setAnalysisForm(prev => ({ ...prev, aiModel: value }))}
+                      value={analysisForm.ai_model} 
+                      onValueChange={(value) => setAnalysisForm(prev => ({ ...prev, ai_model: value }))}
                     >
                       <SelectTrigger data-testid="model-select">
                         <SelectValue />
