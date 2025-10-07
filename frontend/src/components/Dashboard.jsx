@@ -23,7 +23,7 @@ const Dashboard = ({ user, onLogout }) => {
   const [editingPrompt, setEditingPrompt] = useState(null);
   const [promptForm, setPromptForm] = useState({ title: '', content: '' });
   const [selectedFile, setSelectedFile] = useState(null);
-  const [analysisForm, setAnalysisForm] = useState({ prompt_id: '', ai_model: 'gpt-5' });
+  const [analysisForm, setAnalysisForm] = useState({ prompt_ids: [], ai_model: 'gpt-5' });
   const [analyzing, setAnalyzing] = useState(false);
   const [inputMode, setInputMode] = useState('upload'); // 'upload' or 'text'
   const [textInput, setTextInput] = useState('');
