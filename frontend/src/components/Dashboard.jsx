@@ -477,8 +477,8 @@ const Dashboard = ({ user, onLogout }) => {
                   <div>
                     <Label htmlFor="prompt">Analysis Prompt</Label>
                     <Select 
-                      value={analysisForm.prompt_id} 
-                      onValueChange={(value) => setAnalysisForm(prev => ({ ...prev, prompt_id: value }))}
+                      value={analysisForm.prompt_ids[0] || ''} 
+                      onValueChange={(value) => setAnalysisForm(prev => ({ ...prev, prompt_ids: [value] }))}
                     >
                       <SelectTrigger data-testid="prompt-select">
                         <SelectValue placeholder="Select a prompt for analysis" />
