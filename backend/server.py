@@ -15,6 +15,9 @@ import json
 import io
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 import requests
+import pdfplumber
+import PyPDF2
+from io import BytesIO
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
