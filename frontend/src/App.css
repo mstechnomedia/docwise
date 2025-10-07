@@ -1,34 +1,214 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+.font-inter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+.font-space {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
 }
 
-.App-link {
-    color: #61dafb;
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Glass morphism effect */
+.glass {
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  backdrop-filter: blur(16px);
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Animated gradient */
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Smooth transitions */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Button hover effects */
+.btn-primary {
+  @apply bg-slate-800 text-white px-6 py-3 rounded-lg font-medium;
+  @apply hover:bg-slate-700 hover:scale-[1.02] active:scale-[0.98];
+  @apply transition-all duration-200 ease-out;
+  @apply shadow-lg hover:shadow-xl;
+}
+
+.btn-secondary {
+  @apply bg-white text-slate-800 px-6 py-3 rounded-lg font-medium;
+  @apply hover:bg-slate-50 hover:scale-[1.02] active:scale-[0.98];
+  @apply transition-all duration-200 ease-out;
+  @apply border border-slate-200 shadow-sm hover:shadow-md;
+}
+
+.btn-google {
+  @apply bg-white text-slate-700 px-6 py-3 rounded-lg font-medium;
+  @apply hover:bg-slate-50 hover:scale-[1.02] active:scale-[0.98];
+  @apply transition-all duration-200 ease-out;
+  @apply border border-slate-300 shadow-sm hover:shadow-md;
+  @apply flex items-center justify-center gap-3;
+}
+
+/* Card animations */
+.card-hover {
+  @apply transition-all duration-300 ease-out;
+  @apply hover:scale-[1.02] hover:shadow-xl;
+}
+
+/* Loading animations */
+.pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Custom input styles */
+.input-focus {
+  @apply focus:ring-2 focus:ring-slate-500 focus:ring-offset-2;
+  @apply transition-all duration-200 ease-out;
+}
+
+/* Document upload area */
+.drop-zone {
+  @apply border-2 border-dashed border-slate-300 rounded-xl;
+  @apply hover:border-slate-400 hover:bg-slate-50;
+  @apply transition-all duration-200 ease-out;
+}
+
+.drop-zone.dragover {
+  @apply border-slate-500 bg-slate-100;
+}
+
+/* Analysis response styles */
+.analysis-content {
+  @apply prose prose-slate max-w-none;
+  @apply prose-headings:font-space prose-headings:text-slate-800;
+  @apply prose-p:text-slate-600 prose-p:leading-relaxed;
+  @apply prose-strong:text-slate-800 prose-em:text-slate-700;
+  @apply prose-code:bg-slate-100 prose-code:px-2 prose-code:py-1 prose-code:rounded;
+}
+
+/* Navigation styles */
+.nav-link {
+  @apply px-4 py-2 rounded-lg text-slate-600;
+  @apply hover:text-slate-800 hover:bg-slate-100;
+  @apply transition-all duration-200 ease-out;
+}
+
+.nav-link.active {
+  @apply text-slate-800 bg-slate-100;
+}
+
+/* Modal and overlay styles */
+.overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm;
+  @apply flex items-center justify-center z-50;
+  @apply animate-in fade-in duration-200;
+}
+
+.modal {
+  @apply bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4;
+  @apply animate-in zoom-in-95 duration-300;
+}
+
+/* Status badges */
+.badge-success {
+  @apply bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.badge-processing {
+  @apply bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.badge-error {
+  @apply bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .btn-primary,
+  .btn-secondary,
+  .btn-google {
+    @apply px-4 py-2 text-sm;
+  }
+  
+  .modal {
+    @apply mx-2;
+  }
+}
+
+/* Animation keyframes */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.4s ease-out;
+}
+
+/* Utility classes */
+.text-gradient {
+  background: linear-gradient(135deg, #1e293b, #475569);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-noise {
+  background-image: 
+    radial-gradient(circle at 25px 25px, rgba(255,255,255,0.3) 2%, transparent 0%), 
+    radial-gradient(circle at 75px 75px, rgba(255,255,255,0.3) 2%, transparent 0%);
+  background-size: 100px 100px;
 }
