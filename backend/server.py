@@ -386,9 +386,11 @@ async def analyze_document(
     user = await get_current_user(request)
     
     try:
-        analysis_request = AnalysisRequest.parse_raw(analysis_data)
+        analysis_request = AnalysisRequest.model_validate_json(analysis_data)
     except Exception as e:
-        raise HTTPException(status_code=400, detail="Invalid analysis data")
+        logging.error(f"Analysis data parsing error: {e}")
+        logging.error(f"Analysis data received: {analysis_data}")
+        raise HTTPException(status_code=400, detail=f"Invalid analysis data: {str(e)}")
     
     # Check if prompt exists and belongs to user
     prompt = await db.prompts.find_one({
