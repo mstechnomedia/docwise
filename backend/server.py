@@ -291,7 +291,7 @@ async def logout(request: Request):
     return {"success": True}
 
 @api_router.get("/auth/me")
-async def get_me(request):
+async def get_me(request: Request):
     """Get current user info"""
     user = await get_current_user(request)
     return user
