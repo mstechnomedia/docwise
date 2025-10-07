@@ -162,6 +162,24 @@ def is_admin_user(user):
     """Check if user is admin"""
     return user.email == ADMIN_EMAIL
 
+async def get_accessible_prompt(user, prompt_id):
+    """Get prompt that user can access (admin gets own prompts, regular users get admin prompts)"""
+    if is_admin_user(user):
+        # Admin can use their own prompts
+        return await db.prompts.find_one({
+            "id": prompt_id,
+            "user_id": user.id
+        })
+    else:
+        # Regular users can use admin's prompts
+        admin_user = await db.users.find_one({"email": ADMIN_EMAIL})
+        if admin_user:
+            return await db.prompts.find_one({
+                "id": prompt_id,
+                "user_id": admin_user["id"]
+            })
+        return None
+
 async def get_current_user(request):
     """Get current user from session token"""
     # First check cookies
