@@ -327,7 +327,9 @@ async def logout(request: Request):
 async def get_me(request: Request):
     """Get current user info"""
     user = await get_current_user(request)
-    return user
+    user_dict = user.dict()
+    user_dict["is_admin"] = is_admin_user(user)
+    return user_dict
 
 # === Prompt Management Routes ===
 @api_router.post("/prompts", response_model=Prompt)
