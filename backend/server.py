@@ -530,7 +530,18 @@ async def get_analyses(request: Request):
     user = await get_current_user(request)
     
     analyses = await db.analyses.find({"user_id": user.id}).sort("created_at", -1).to_list(1000)
-    return [DocumentAnalysis(**analysis) for analysis in analyses]
+    
+    # Handle backwards compatibility: convert prompt_id to prompt_ids
+    converted_analyses = []
+    for analysis in analyses:
+        if "prompt_id" in analysis and "prompt_ids" not in analysis:
+            analysis["prompt_ids"] = [analysis["prompt_id"]]
+            del analysis["prompt_id"]
+        elif "prompt_ids" not in analysis:
+            analysis["prompt_ids"] = []  # Default empty list
+        converted_analyses.append(analysis)
+    
+    return [DocumentAnalysis(**analysis) for analysis in converted_analyses]
 
 @api_router.get("/documents/analyses/{analysis_id}/download")
 async def download_analysis(analysis_id: str, request: Request):
