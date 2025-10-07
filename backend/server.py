@@ -439,7 +439,7 @@ Please analyze the document content according to the user prompt and provide a c
     return DocumentAnalysis(**analysis)
 
 @api_router.get("/documents/analyses", response_model=List[DocumentAnalysis])
-async def get_analyses(request):
+async def get_analyses(request: Request):
     """Get all analyses for current user"""
     user = await get_current_user(request)
     
