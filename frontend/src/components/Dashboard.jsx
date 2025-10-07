@@ -107,8 +107,13 @@ const Dashboard = ({ user, onLogout }) => {
   const handleAnalyzeDocument = async (e) => {
     e.preventDefault();
     
-    if (!selectedFile || !analysisForm.prompt_id) {
+    if (inputMode === 'upload' && (!selectedFile || !analysisForm.prompt_id)) {
       toast.error('Please select a file and prompt');
+      return;
+    }
+    
+    if (inputMode === 'text' && (!textInput.trim() || !analysisForm.prompt_id)) {
+      toast.error('Please enter text content and select a prompt');
       return;
     }
     
