@@ -120,18 +120,36 @@ const Dashboard = ({ user, onLogout }) => {
     setAnalyzing(true);
     
     try {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-      formData.append('analysis_data', JSON.stringify(analysisForm));
+      let response;
       
-      const response = await axios.post(`${API}/documents/analyze`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      if (inputMode === 'upload') {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('analysis_data', JSON.stringify(analysisForm));
+        
+        response = await axios.post(`${API}/documents/analyze`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+      } else {
+        // Text input mode
+        const textAnalysisData = {
+          ...analysisForm,
+          text_content: textInput,
+          document_name: 'Text Input'
+        };
+        
+        response = await axios.post(`${API}/documents/analyze-text`, textAnalysisData, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      }
       
-      toast.success('Document analyzed successfully!');
+      toast.success('Content analyzed successfully!');
       setSelectedFile(null);
+      setTextInput('');
       setAnalysisForm({ prompt_id: '', ai_model: 'gpt-5' });
       loadAnalyses();
       setActiveTab('analyses');
