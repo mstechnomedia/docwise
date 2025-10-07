@@ -332,8 +332,11 @@ async def get_me(request: Request):
 # === Prompt Management Routes ===
 @api_router.post("/prompts", response_model=Prompt)
 async def create_prompt(prompt_data: PromptCreate, request: Request):
-    """Create a new prompt"""
+    """Create a new prompt - Admin only"""
     user = await get_current_user(request)
+    
+    if not is_admin_user(user):
+        raise HTTPException(status_code=403, detail="Admin access required")
     
     prompt = {
         "id": str(uuid.uuid4()),
