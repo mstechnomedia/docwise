@@ -113,6 +113,27 @@ class ManuscriptTMAPITester:
             return True
         return False
 
+    def test_login_admin(self):
+        """Test admin user login"""
+        admin_login = {
+            "email": "mueen.ahmed@gmail.com",
+            "password": "admin123456"
+        }
+        
+        success, response = self.run_test(
+            "Admin Login",
+            "POST",
+            "auth/login",
+            200,
+            data=admin_login
+        )
+        
+        if success and 'session_token' in response:
+            self.session_token = response['session_token']
+            self.user_data = response['user']
+            return True
+        return False
+
     def test_login_user(self):
         """Test user login with existing credentials"""
         if not self.user_data:
