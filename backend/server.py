@@ -132,7 +132,7 @@ class DocumentAnalysis(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str
     document_name: str
-    prompt_id: str
+    prompt_ids: List[str]
     ai_model: str  # "gpt-5" or "claude-4-sonnet-20250514"
     extracted_text: str
     response: str
