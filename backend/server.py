@@ -443,7 +443,7 @@ async def analyze_document(
         logging.error(f"Analysis data received: {analysis_data}")
         raise HTTPException(status_code=400, detail=f"Invalid analysis data: {str(e)}")
     
-    # Check if prompt exists and belongs to user
+    # Check if prompt exists and user can access it
     prompt = await get_accessible_prompt(user, analysis_request.prompt_id)
     if not prompt:
         raise HTTPException(status_code=404, detail="Prompt not found")
@@ -556,7 +556,7 @@ async def analyze_text(
     """Analyze text content directly without file upload"""
     user = await get_current_user(request)
     
-    # Check if prompt exists and belongs to user
+    # Check if prompt exists and user can access it
     prompt = await get_accessible_prompt(user, analysis_request.prompt_id)
     if not prompt:
         raise HTTPException(status_code=404, detail="Prompt not found")
