@@ -305,6 +305,90 @@ startxref
         )
         return success
 
+    def test_text_analysis_gpt5(self):
+        """Test text analysis with GPT-5 model"""
+        if not hasattr(self, 'test_prompt_id'):
+            return False
+        
+        text_analysis_data = {
+            "prompt_id": self.test_prompt_id,
+            "ai_model": "gpt-5",
+            "text_content": "This is a sample financial report. Revenue for Q1 2024 was $1.2 million, representing a 15% increase from the previous quarter. Operating expenses were $800,000, resulting in a net profit margin of 33.3%. Key performance indicators show strong growth in customer acquisition with 500 new customers added this quarter.",
+            "document_name": "Sample Financial Text"
+        }
+        
+        success, response = self.run_test(
+            "Text Analysis (GPT-5)",
+            "POST",
+            "documents/analyze-text",
+            200,
+            data=text_analysis_data
+        )
+        
+        if success and 'id' in response:
+            self.test_text_analysis_id = response['id']
+            return True
+        return False
+
+    def test_text_analysis_claude4(self):
+        """Test text analysis with Claude-4 model"""
+        if not hasattr(self, 'test_prompt_id'):
+            return False
+        
+        text_analysis_data = {
+            "prompt_id": self.test_prompt_id,
+            "ai_model": "claude-4",
+            "text_content": "Market analysis report: The technology sector showed robust performance in 2024. Software companies experienced an average revenue growth of 22%, while hardware manufacturers saw more modest gains of 8%. Cloud computing services dominated the market with a 45% market share increase. Investment in AI and machine learning technologies reached $50 billion globally.",
+            "document_name": "Market Analysis Text"
+        }
+        
+        success, response = self.run_test(
+            "Text Analysis (Claude-4)",
+            "POST",
+            "documents/analyze-text",
+            200,
+            data=text_analysis_data
+        )
+        
+        if success and 'id' in response:
+            self.test_text_analysis_claude_id = response['id']
+            return True
+        return False
+
+    def test_text_analysis_validation(self):
+        """Test text analysis input validation"""
+        # Test missing prompt_id
+        invalid_data = {
+            "ai_model": "gpt-5",
+            "text_content": "Some text content",
+            "document_name": "Test Document"
+        }
+        
+        success, response = self.run_test(
+            "Text Analysis Validation (Missing Prompt)",
+            "POST",
+            "documents/analyze-text",
+            422,  # Validation error
+            data=invalid_data
+        )
+        
+        # Test missing text_content
+        invalid_data2 = {
+            "prompt_id": "fake-prompt-id",
+            "ai_model": "gpt-5",
+            "document_name": "Test Document"
+        }
+        
+        success2, response2 = self.run_test(
+            "Text Analysis Validation (Missing Text)",
+            "POST",
+            "documents/analyze-text",
+            422,  # Validation error
+            data=invalid_data2
+        )
+        
+        return success and success2
+
     def test_delete_prompt(self):
         """Test deleting a prompt"""
         if not hasattr(self, 'test_prompt_id'):
