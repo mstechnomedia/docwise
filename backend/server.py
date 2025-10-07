@@ -470,9 +470,6 @@ Generated: {analysis['created_at']}
 {analysis['extracted_text']}
 """
     
-    # Create file stream
-    file_stream = io.BytesIO(content.encode('utf-8'))
-    
     return StreamingResponse(
         io.BytesIO(content.encode('utf-8')),
         media_type="text/plain",
