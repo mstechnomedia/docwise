@@ -331,8 +331,8 @@ async def analyze_document(
     # Read file content
     file_content = await file.read()
     
-    # Extract text from PDF (placeholder - will implement advanced extraction)
-    extracted_text = f"[PDF Content from {file.filename}]\n\nThis is placeholder text. Advanced PDF extraction with tables, images, and formatting will be implemented."
+    # Advanced PDF extraction with tables and formatting
+    extracted_text = await extract_pdf_content(file_content, file.filename)
     
     # Generate AI response
     try:
