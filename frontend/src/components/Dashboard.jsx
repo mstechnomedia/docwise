@@ -253,8 +253,8 @@ const Dashboard = ({ user, onLogout }) => {
           </nav>
         </div>
 
-        {/* Prompts Tab */}
-        {activeTab === 'prompts' && (
+        {/* Prompts Tab - Admin Only */}
+        {activeTab === 'prompts' && user.is_admin && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold text-slate-800 font-space">Analysis Prompts</h2>
