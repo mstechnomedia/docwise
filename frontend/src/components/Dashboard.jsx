@@ -125,7 +125,7 @@ const Dashboard = ({ user, onLogout }) => {
       
       toast.success('Document analyzed successfully!');
       setSelectedFile(null);
-      setAnalysisForm({ promptId: '', aiModel: 'gpt-5' });
+      setAnalysisForm({ prompt_id: '', ai_model: 'gpt-5' });
       loadAnalyses();
       setActiveTab('analyses');
       
