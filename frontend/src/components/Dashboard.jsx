@@ -617,8 +617,17 @@ const Dashboard = ({ user, onLogout }) => {
                         <div>
                           <CardTitle className="text-lg font-space">{analysis.document_name}</CardTitle>
                           <p className="text-sm text-slate-600 mt-1">
-                            Prompt: {prompt?.title || 'Unknown'}
+                            Prompt{analysisPrompts.length !== 1 ? 's' : ''}: {
+                              analysisPrompts.length > 0 
+                                ? analysisPrompts.map(p => p.title).join(', ')
+                                : 'Unknown'
+                            }
                           </p>
+                          {analysisPrompts.length > 2 && (
+                            <p className="text-xs text-slate-500">
+                              ({analysisPrompts.length} prompts used)
+                            </p>
+                          )}
                         </div>
                         <div className="flex items-center space-x-2">
                           <Badge variant="outline" className={`${
