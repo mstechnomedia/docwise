@@ -36,7 +36,6 @@ function App() {
   };
 
   const handleLogin = async (userData, token) => {
-    setUser(userData);
     setSessionToken(token);
     
     // Set session token in cookie
@@ -44,6 +43,15 @@ function App() {
     
     // Set axios header for future requests
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    
+    // Fetch complete user data with admin flag
+    try {
+      const response = await axios.get(`${API}/auth/me`);
+      setUser(response.data);
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+      setUser(userData); // Fallback to login response data
+    }
     
     toast.success('Successfully logged in!');
   };
