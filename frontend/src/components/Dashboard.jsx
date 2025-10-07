@@ -218,7 +218,12 @@ const Dashboard = ({ user, onLogout }) => {
                   alt={user.name}
                   className="w-8 h-8 rounded-full"
                 />
-                <span className="font-medium">{user.name}</span>
+                <div className="flex flex-col">
+                  <span className="font-medium">{user.name}</span>
+                  {user.is_admin && (
+                    <span className="text-xs text-amber-600 font-semibold">Admin</span>
+                  )}
+                </div>
               </div>
               <Button 
                 variant="outline" 
