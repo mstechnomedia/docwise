@@ -630,12 +630,12 @@ startxref
                 self.test_multi_prompt_text_analysis()  # New multi-prompt test
                 self.test_text_analysis_validation()
                 
-                # Cleanup
-                self.test_delete_prompt()
-                self.test_delete_second_prompt()
-            
-            # Logout
-            self.test_logout()
+                    # Cleanup
+                    self.test_delete_prompt()
+                    self.test_delete_second_prompt()
+                
+                # Logout
+                self.test_logout()
         
         # Print summary
         print("\n" + "=" * 50)
