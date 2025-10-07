@@ -608,8 +608,12 @@ startxref
         if self.test_register_user():
             self.test_get_current_user()
             
-            # Prompt management tests
-            if self.test_create_prompt():
+            # Switch to admin user for prompt management
+            if self.test_login_admin():
+                self.test_get_current_user()
+                
+                # Prompt management tests (admin only)
+                if self.test_create_prompt():
                 self.test_create_second_prompt()  # Create second prompt for multi-prompt testing
                 self.test_get_prompts()
                 self.test_update_prompt()
