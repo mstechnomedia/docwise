@@ -444,10 +444,7 @@ async def analyze_document(
         raise HTTPException(status_code=400, detail=f"Invalid analysis data: {str(e)}")
     
     # Check if prompt exists and belongs to user
-    prompt = await db.prompts.find_one({
-        "id": analysis_request.prompt_id,
-        "user_id": user.id
-    })
+    prompt = await get_accessible_prompt(user, analysis_request.prompt_id)
     if not prompt:
         raise HTTPException(status_code=404, detail="Prompt not found")
     
@@ -560,10 +557,7 @@ async def analyze_text(
     user = await get_current_user(request)
     
     # Check if prompt exists and belongs to user
-    prompt = await db.prompts.find_one({
-        "id": analysis_request.prompt_id,
-        "user_id": user.id
-    })
+    prompt = await get_accessible_prompt(user, analysis_request.prompt_id)
     if not prompt:
         raise HTTPException(status_code=404, detail="Prompt not found")
     
