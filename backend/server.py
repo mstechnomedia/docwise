@@ -571,10 +571,23 @@ async def analyze_text(
     """Analyze text content directly without file upload"""
     user = await get_current_user(request)
     
-    # Check if prompt exists and user can access it
-    prompt = await get_accessible_prompt(user, analysis_request.prompt_id)
-    if not prompt:
-        raise HTTPException(status_code=404, detail="Prompt not found")
+    # Check if prompts exist and validate access
+    if not analysis_request.prompt_ids:
+        raise HTTPException(status_code=400, detail="At least one prompt is required")
+    
+    # Get admin user for prompt validation
+    admin_user = await db.users.find_one({"email": ADMIN_EMAIL})
+    if not admin_user:
+        raise HTTPException(status_code=500, detail="Admin user not found")
+    
+    # Validate all prompt IDs
+    prompts = await db.prompts.find({
+        "id": {"$in": analysis_request.prompt_ids},
+        "user_id": admin_user["id"] if not is_admin_user(user) else user.id
+    }).to_list(1000)
+    
+    if len(prompts) != len(analysis_request.prompt_ids):
+        raise HTTPException(status_code=404, detail="One or more prompts not found")
     
     # Use text content directly
     extracted_text = f"[Text Content from {analysis_request.document_name}]\n\n{analysis_request.text_content}"
