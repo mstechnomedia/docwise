@@ -15,7 +15,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const Dashboard = ({ user, onLogout }) => {
-  const [activeTab, setActiveTab] = useState('prompts');
+  const [activeTab, setActiveTab] = useState(user.is_admin ? 'prompts' : 'analyze');
   const [prompts, setPrompts] = useState([]);
   const [analyses, setAnalyses] = useState([]);
   const [loading, setLoading] = useState(false);
