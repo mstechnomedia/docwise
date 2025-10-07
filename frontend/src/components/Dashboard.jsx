@@ -105,7 +105,7 @@ const Dashboard = ({ user, onLogout }) => {
   const handleAnalyzeDocument = async (e) => {
     e.preventDefault();
     
-    if (!selectedFile || !analysisForm.promptId) {
+    if (!selectedFile || !analysisForm.prompt_id) {
       toast.error('Please select a file and prompt');
       return;
     }
