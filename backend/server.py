@@ -322,7 +322,7 @@ async def get_prompts(request: Request):
     return [Prompt(**prompt) for prompt in prompts]
 
 @api_router.put("/prompts/{prompt_id}", response_model=Prompt)
-async def update_prompt(prompt_id: str, prompt_data: PromptUpdate, request):
+async def update_prompt(prompt_id: str, prompt_data: PromptUpdate, request: Request):
     """Update a prompt"""
     user = await get_current_user(request)
     
