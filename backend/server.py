@@ -142,6 +142,12 @@ class AnalysisRequest(BaseModel):
     prompt_id: str
     ai_model: str
 
+class TextAnalysisRequest(BaseModel):
+    prompt_id: str
+    ai_model: str
+    text_content: str
+    document_name: str = "Text Input"
+
 class SessionData(BaseModel):
     id: str
     email: str
