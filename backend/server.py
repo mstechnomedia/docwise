@@ -206,7 +206,8 @@ async def process_session_data(request: Request):
             "picture": session_data.get('picture'),
             "created_at": datetime.now(timezone.utc)
         }
-        await db.users.insert_one(user_data)
+        result = await db.users.insert_one(user_data)
+        user_data['_id'] = str(result.inserted_id)
         user = user_data
     
     # Create session
