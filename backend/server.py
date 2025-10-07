@@ -394,8 +394,11 @@ async def update_prompt(prompt_id: str, prompt_data: PromptUpdate, request: Requ
 
 @api_router.delete("/prompts/{prompt_id}")
 async def delete_prompt(prompt_id: str, request: Request):
-    """Delete a prompt"""
+    """Delete a prompt - Admin only"""
     user = await get_current_user(request)
+    
+    if not is_admin_user(user):
+        raise HTTPException(status_code=403, detail="Admin access required")
     
     result = await db.prompts.delete_one({"id": prompt_id, "user_id": user.id})
     if result.deleted_count == 0:
