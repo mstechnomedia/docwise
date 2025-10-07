@@ -35,6 +35,59 @@ api_router = APIRouter(prefix="/api")
 
 security = HTTPBearer(auto_error=False)
 
+# === PDF Processing Functions ===
+async def extract_pdf_content(file_content: bytes, filename: str) -> str:
+    """
+    Advanced PDF extraction with tables and formatting preservation
+    """
+    try:
+        # Use pdfplumber for advanced extraction with table support
+        with pdfplumber.open(BytesIO(file_content)) as pdf:
+            extracted_text = f"[PDF Content from {filename}]\n\n"
+            
+            for page_num, page in enumerate(pdf.pages, 1):
+                extracted_text += f"--- Page {page_num} ---\n"
+                
+                # Extract text with formatting
+                text = page.extract_text()
+                if text:
+                    extracted_text += text + "\n"
+                
+                # Extract tables if present
+                tables = page.extract_tables()
+                if tables:
+                    extracted_text += "\n[TABLES FOUND ON THIS PAGE]\n"
+                    for table_num, table in enumerate(tables, 1):
+                        extracted_text += f"\nTable {table_num}:\n"
+                        for row in table:
+                            if row:  # Skip empty rows
+                                # Join non-None cells with | separator
+                                row_text = " | ".join([str(cell) if cell else "" for cell in row])
+                                extracted_text += row_text + "\n"
+                        extracted_text += "\n"
+                
+                extracted_text += "\n"
+            
+            return extracted_text
+            
+    except Exception as e:
+        # Fallback to PyPDF2 for basic extraction
+        try:
+            pdf_reader = PyPDF2.PdfReader(BytesIO(file_content))
+            extracted_text = f"[PDF Content from {filename}] (Basic extraction)\n\n"
+            
+            for page_num, page in enumerate(pdf_reader.pages, 1):
+                extracted_text += f"--- Page {page_num} ---\n"
+                text = page.extract_text()
+                if text:
+                    extracted_text += text + "\n\n"
+            
+            return extracted_text
+            
+        except Exception as fallback_error:
+            # Final fallback
+            return f"[PDF Content from {filename}]\n\nError extracting PDF content: {str(e)}\nFallback error: {str(fallback_error)}"
+
 # === Models ===
 class User(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
