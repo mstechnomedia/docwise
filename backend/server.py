@@ -359,7 +359,7 @@ async def delete_prompt(prompt_id: str, request: Request):
 async def analyze_document(
     file: UploadFile = File(...),
     analysis_data: str = Form(...),
-    request = None
+    request: Request = None
 ):
     """Upload and analyze document"""
     user = await get_current_user(request)
