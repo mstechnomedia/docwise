@@ -139,11 +139,11 @@ class DocumentAnalysis(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class AnalysisRequest(BaseModel):
-    prompt_id: str
+    prompt_ids: List[str]  # Changed to support multiple prompts
     ai_model: str
 
 class TextAnalysisRequest(BaseModel):
-    prompt_id: str
+    prompt_ids: List[str]  # Changed to support multiple prompts
     ai_model: str
     text_content: str
     document_name: str = "Text Input"
