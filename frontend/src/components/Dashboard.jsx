@@ -434,7 +434,7 @@ const Dashboard = ({ user, onLogout }) => {
                   <Button 
                     type="submit" 
                     className="w-full btn-primary"
-                    disabled={analyzing || !selectedFile || !analysisForm.promptId}
+                    disabled={analyzing || !selectedFile || !analysisForm.prompt_id}
                     data-testid="analyze-btn"
                   >
                     {analyzing ? (
