@@ -218,7 +218,8 @@ async def process_session_data(request: Request):
         "expires_at": datetime.now(timezone.utc) + timedelta(days=7),
         "created_at": datetime.now(timezone.utc)
     }
-    await db.sessions.insert_one(session_obj)
+    result = await db.sessions.insert_one(session_obj)
+    session_obj['_id'] = str(result.inserted_id)
     
     return {
         "user": user,
@@ -253,7 +254,8 @@ async def register(user_data: UserCreate):
         "expires_at": datetime.now(timezone.utc) + timedelta(days=7),
         "created_at": datetime.now(timezone.utc)
     }
-    await db.sessions.insert_one(session_obj)
+    result = await db.sessions.insert_one(session_obj)
+    session_obj['_id'] = str(result.inserted_id)
     
     return {
         "user": {k: v for k, v in user.items() if k != 'password'},
@@ -276,7 +278,8 @@ async def login(login_data: UserLogin):
         "expires_at": datetime.now(timezone.utc) + timedelta(days=7),
         "created_at": datetime.now(timezone.utc)
     }
-    await db.sessions.insert_one(session_obj)
+    result = await db.sessions.insert_one(session_obj)
+    session_obj['_id'] = str(result.inserted_id)
     
     return {
         "user": {k: v for k, v in user.items() if k != 'password'},
