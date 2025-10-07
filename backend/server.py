@@ -369,10 +369,13 @@ async def get_prompts(request: Request):
 
 @api_router.put("/prompts/{prompt_id}", response_model=Prompt)
 async def update_prompt(prompt_id: str, prompt_data: PromptUpdate, request: Request):
-    """Update a prompt"""
+    """Update a prompt - Admin only"""
     user = await get_current_user(request)
     
-    # Check if prompt exists and belongs to user
+    if not is_admin_user(user):
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    # Check if prompt exists and belongs to admin
     existing = await db.prompts.find_one({"id": prompt_id, "user_id": user.id})
     if not existing:
         raise HTTPException(status_code=404, detail="Prompt not found")
